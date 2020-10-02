@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
    loadPage(page);
 
    function loadPage(page) {
-      console.log(page)
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
          if(this.readyState === 4) {
