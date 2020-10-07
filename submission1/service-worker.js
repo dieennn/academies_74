@@ -1,15 +1,22 @@
-const CACHE_NAME = "firstpwa";
+const CACHE_NAME = "submission1";
 var urlsToCache = [
    "/",
-   "/nav.html",
    "/index.html",
+   "/manifest.json",
+   "/nav.html",
    "/pages/home.html",
    "/pages/project.html",
    "/pages/about.html",
    "/pages/contact.html",
    "/css/materialize.min.css",
    "/js/materialize.min.js",
-   "/js/nav.js"
+   "/js/nav.js",
+   "/icon.png",
+   "https://fonts.googleapis.com/icon?family=Material+Icons",
+   "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
+   "./images/1.png",
+   "./images/2.jpg",
+   "./images/3.png"
 ];
 
 // Menyimpan Aset ke Cache
