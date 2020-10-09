@@ -1,5 +1,5 @@
 const CACHE_NAME = "submission1";
-var urlsToCache = [
+const urlsToCache = [
    "/",
    "/index.html",
    "/manifest.json",
@@ -20,11 +20,11 @@ var urlsToCache = [
 ];
 
 // Menyimpan Aset ke Cache
-self.addEventListener("install", function(event) {
+self.addEventListener("install", (event) => {
    event.waitUntil(
       caches.open(CACHE_NAME)
-      .then(function(cache) {
-         return cache.addAll(urlsToCache);
+      .then((cache) => {
+         cache.addAll(urlsToCache);
       })
    );
 });
