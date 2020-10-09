@@ -11,12 +11,14 @@ const urlsToCache = [
    "/css/materialize.min.css",
    "/js/materialize.min.js",
    "/js/nav.js",
-   "/icon.png",
+   "./images/favicon.ico",
    "https://fonts.googleapis.com/icon?family=Material+Icons",
    "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
    "./images/1.png",
    "./images/2.jpg",
-   "./images/3.png"
+   "./images/3.png",
+   "./icon192x192.svg",
+   "./icon512x512.svg"
 ];
 
 // Menyimpan Aset ke Cache

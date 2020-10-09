@@ -38,7 +38,7 @@ let loadNav = () => {
 let loadPage = (page) => {
    let xhttp = new XMLHttpRequest();
    xhttp.open("GET", "pages/" + page + ".html", true);
-   xhttp.onreadystatechange = function() {
+   xhttp.onreadystatechange = async function() {
       if(this.readyState === 4) {
          let content = document.querySelector("#body-content");
          if(this.status === 200) {
