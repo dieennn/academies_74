@@ -11,53 +11,53 @@ let status = (response) => {
 }
 
 // Blok kode untuk memparsing json menjadi array JavaScript
-function json(response) {
+let json = (response) => {
     return response.json();
 }
 
 // Blok kode untuk meng-handle kesalahan di blok catch
-function error(error) {
+let error = (error) => {
     console.log("Error : " + error);
 }
 
 // Blok kode untuk melakukan request data json
-function getArticles() {
+let getArticles = () => {
     if ('caches' in window) {
-        caches.match(base_url + "articles").then(function(response) {
+        caches.match(`${base_url}articles`).then((response) => {
             if (response) {
-                response.json().then(function (data) {
-                var articlesHTML = "";
-                data.result.forEach(function(article) {
-                    articlesHTML += `
-                        <div class="card">
-                            <a href="./article.html?id=${article.id}">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img src="${article.thumbnail}" />
+                response.json().then((data) => {
+                    var articlesHTML = "";
+                    data.result.forEach((article) => {
+                        articlesHTML += `
+                            <div class="card">
+                                <a href="./article.html?id=${article.id}">
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <img src="${article.thumbnail}" />
+                                </div>
+                                </a>
+                                <div class="card-content">
+                                <span class="card-title truncate">${article.title}</span>
+                                <p>${article.description}</p>
+                                </div>
                             </div>
-                            </a>
-                            <div class="card-content">
-                            <span class="card-title truncate">${article.title}</span>
-                            <p>${article.description}</p>
-                            </div>
-                        </div>
-                        `;
-                });
-                // Sisipkan komponen card ke dalam elemen dengan id #content
-                document.getElementById("articles").innerHTML = articlesHTML;
+                            `;
+                    });
+                    // Sisipkan komponen card ke dalam elemen dengan id #content
+                    document.getElementById("articles").innerHTML = articlesHTML;
                 })
             }
         })
     }
 
-    fetch(base_url + "articles")
+    fetch(`${base_url}articles`)
     .then(status)
     .then(json)
-    .then(function(data) {
+    .then((data) => {
         // Objek/array JavaScript dari response.json() masuk lewat data.
         // Menyusun komponen card artikel secara dinamis
 
         let articlesHTML = "";
-        data.result.forEach(function(article) {
+        data.result.forEach((article) => {
             articlesHTML += `
                 <div class="card">
                     <a href="./article.html?id=${article.id}">
@@ -78,15 +78,15 @@ function getArticles() {
     .catch(error);
 }
 
-function getArticleById() {
+let getArticleById = () => {
     // Ambil nilai query parameter (?id=)
     var urlParams = new URLSearchParams(window.location.search);
     var idParam = urlParams.get("id");
 
-    fetch(base_url + "article/" + idParam)
+    fetch(`${base_url}article/${idParam}`)
     .then(status)
     .then(json)
-    .then(function(data) {
+    .then((data) => {
         // Objek JavaScript dari response.json() masuk lewat variabel data.
         console.log(data);
         // Menyusun komponen card artikel secara dinamis

@@ -15,22 +15,22 @@ var urlsToCache = [
 ];
 
 // Menyimpan Aset ke Cache
-self.addEventListener("install", function(event) {
+self.addEventListener("install", (event) => {
    event.waitUntil(
       caches.open(CACHE_NAME)
-      .then(function(cache) {
+      .then((cache) => {
          return cache.addAll(urlsToCache);
       })
    );
 });
 
 // Menggunakan Aset dari Cache
-self.addEventListener("fetch", function(event) {
+self.addEventListener("fetch", (event) => {
    const base_url = "https://aqueous-woodland-96253.herokuapp.com/";
    if (event.request.url.indexOf(base_url) > -1) {
       event.respondWith(
-         caches.open(CACHE_NAME).then(function (cache) {
-            return fetch(event.request).then(function (response) {
+         caches.open(CACHE_NAME).then( (cache) => {
+            return fetch(event.request).then( (response) => {
                cache.put(event.request.url, response.clone());
                return response;
             })
@@ -38,7 +38,7 @@ self.addEventListener("fetch", function(event) {
       );
    } else {
       event.respondWith(
-         caches.match(event.request, { ignoreSearch: true }).then(function (response) {
+         caches.match(event.request, { ignoreSearch: true }).then( (response) => {
             return response || fetch(event.request);
          })
       )
@@ -46,12 +46,12 @@ self.addEventListener("fetch", function(event) {
 });
 
 // Menghapus Cache Lama
-self.addEventListener("active", function(event) {
+self.addEventListener("active", (event) => {
    event.waitUntil(
       caches.keys()
-      .then(function(cacheNames) {
+      .then((cacheNames) => {
          return Promise.all(
-            cacheNames.map(function(cacheName) {
+            cacheNames.map((cacheName) => {
                if(cacheName != CACHE_NAME) {
                   console.log("ServiceWorker: cache " + cacheName + " dihapus");
                   return caches.delete(cacheName);
