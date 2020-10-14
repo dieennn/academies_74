@@ -134,3 +134,18 @@ function showNotifikasiRenotify() {
         console.error('Fitur notifikasi tidak diijinkan.');
     }
 }
+
+// Menampilkan Notifikasi Tanpa Suara atau Getaran
+function showNotifikasiSilent() {
+    const title = 'Notifikasi senyap';
+    const options = {
+        silent: true
+    };
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+            registration.showNotification(title, options);
+        });
+    } else {
+        console.error('Fitur notifikasi tidak diijinkan.');
+    }
+}
