@@ -6,8 +6,50 @@
 </head>
 <body>
   <h1>Notification API</h1>
-  <button onclick="showNotifikasiSederhana()">Notifikasi Sederhana dengan Title dan Body</button>
-  <button onclick="showNotifikasiRequireInteraction()">Notifikasi dengan Meminta Interaksi Pengguna</button>
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Jenis</th>
+        <th>Tombol</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          1
+        </td>
+        <td>
+          Notifikasi Sederhana dengan Title dan Body
+        </td>
+        <td>
+          <button onclick="showNotifikasiSederhana()">Tes</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          2
+        </td>
+        <td>
+          Notifikasi dengan Meminta Interaksi Pengguna
+        </td>
+        <td>
+          <button onclick="showNotifikasiRequireInteraction()">Tes</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          3
+        </td>
+        <td>
+          Menampilkan Notifikasi dengan Gambar Ikon
+        </td>
+        <td>
+          <button onclick="showNotifikasiIkon()">Tes</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <script type="text/javascript">
     // Periksa service worker
     if (!('serviceWorker' in navigator)) {
@@ -64,6 +106,22 @@
         const title = 'Notifikasi yang meminta interaksi pengguna';
         const options = {
             requireInteraction: true,
+        };
+        if (Notification.permission === 'granted') {
+            navigator.serviceWorker.ready.then(function(registration) {
+                registration.showNotification(title, options);
+            });
+        } else {
+            console.error('Fitur notifikasi tidak diijinkan.');
+        }
+    }
+
+    // Menampilkan Notifikasi dengan Gambar Ikon
+    function showNotifikasiIkon() {
+        const title = 'Notifikasi Sederhana';
+        const options = {
+            'body': 'Ini adalah konten notifikasi dengan gambar ikon.',
+            'icon': './icon.png'
         };
         if (Notification.permission === 'granted') {
             navigator.serviceWorker.ready.then(function(registration) {
