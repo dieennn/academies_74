@@ -6,6 +6,7 @@
 </head>
 <body>
   <h1>Notification API</h1>
+  <button onclick="showNotifikasiSederhana()">Notifikasi Sederhana dengan Title dan Body</button>
   <script type="text/javascript">
     // Periksa service worker
     if (!('serviceWorker' in navigator)) {
@@ -44,6 +45,19 @@
         
         console.log("Fitur notifikasi diijinkan.");
       });
+    }
+    function showNotifikasiSederhana() {
+        const title = 'Notifikasi Sederhana';
+        const options = {
+            'body': 'Ini adalah konten notifikasi. \nBisa menggunakan baris baru.',
+        }
+        if (Notification.permission === 'granted') {
+            navigator.serviceWorker.ready.then(function(registration) {
+                registration.showNotification(title, options);
+            });
+        } else {
+            console.error('FItur notifikasi tidak diijinkan.');
+        }
     }
   </script>
 </body>
