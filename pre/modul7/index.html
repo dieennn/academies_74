@@ -7,6 +7,7 @@
 <body>
   <h1>Notification API</h1>
   <button onclick="showNotifikasiSederhana()">Notifikasi Sederhana dengan Title dan Body</button>
+  <button onclick="showNotifikasiRequireInteraction()">Notifikasi dengan Meminta Interaksi Pengguna</button>
   <script type="text/javascript">
     // Periksa service worker
     if (!('serviceWorker' in navigator)) {
@@ -57,6 +58,19 @@
             });
         } else {
             console.error('FItur notifikasi tidak diijinkan.');
+        }
+    }
+    function showNotifikasiRequireInteraction() {
+        const title = 'Notifikasi yang meminta interaksi pengguna';
+        const options = {
+            requireInteraction: true,
+        };
+        if (Notification.permission === 'granted') {
+            navigator.serviceWorker.ready.then(function(registration) {
+                registration.showNotification(title, options);
+            });
+        } else {
+            console.error('Fitur notifikasi tidak diijinkan.');
         }
     }
   </script>
