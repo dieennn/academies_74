@@ -3,6 +3,7 @@
 <head>
   <title>Notification API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google" content="notranslate" />
 </head>
 <body>
   <h1>Notification API</h1>
@@ -48,6 +49,17 @@
           <button onclick="showNotifikasiIkon()">Tes</button>
         </td>
       </tr>
+      <tr>
+        <td>
+          4
+        </td>
+        <td>
+          Menampilkan Notifikasi dengan Gambar Badge
+        </td>
+        <td>
+          <button onclick="showNotifikasiBadge()">Tes</button>
+        </td>
+      </tr>
     </tbody>
   </table>
   <script type="text/javascript">
@@ -89,48 +101,7 @@
         console.log("Fitur notifikasi diijinkan.");
       });
     }
-    function showNotifikasiSederhana() {
-        const title = 'Notifikasi Sederhana';
-        const options = {
-            'body': 'Ini adalah konten notifikasi. \nBisa menggunakan baris baru.',
-        }
-        if (Notification.permission === 'granted') {
-            navigator.serviceWorker.ready.then(function(registration) {
-                registration.showNotification(title, options);
-            });
-        } else {
-            console.error('FItur notifikasi tidak diijinkan.');
-        }
-    }
-    function showNotifikasiRequireInteraction() {
-        const title = 'Notifikasi yang meminta interaksi pengguna';
-        const options = {
-            requireInteraction: true,
-        };
-        if (Notification.permission === 'granted') {
-            navigator.serviceWorker.ready.then(function(registration) {
-                registration.showNotification(title, options);
-            });
-        } else {
-            console.error('Fitur notifikasi tidak diijinkan.');
-        }
-    }
-
-    // Menampilkan Notifikasi dengan Gambar Ikon
-    function showNotifikasiIkon() {
-        const title = 'Notifikasi Sederhana';
-        const options = {
-            'body': 'Ini adalah konten notifikasi dengan gambar ikon.',
-            'icon': './icon.png'
-        };
-        if (Notification.permission === 'granted') {
-            navigator.serviceWorker.ready.then(function(registration) {
-                registration.showNotification(title, options);
-            });
-        } else {
-            console.error('Fitur notifikasi tidak diijinkan.');
-        }
-    }
   </script>
+  <script src="./notif.js"></script>
 </body>
 </html>
