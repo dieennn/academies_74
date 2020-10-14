@@ -149,3 +149,22 @@ function showNotifikasiSilent() {
         console.error('Fitur notifikasi tidak diijinkan.');
     }
 }
+
+// Menampilkan Notifikasi dengan Gambar Latar
+/**
+ * * rasio yang disarankan adalah 2:1 (panjangnya dua kali tinggi).
+ */
+function showNotifikasiGambar() {
+    const title = 'Notifikasi dengan Gambar';
+    const options = {
+        'body': 'Ini adalah konten notifikasi dengan gambar latar.',
+        'image': './icon.png'
+    };
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+            registration.showNotification(title, options);
+        });
+    } else {
+        console.error('Fitur notifikasi tidak diijinkan.');
+    }
+}
