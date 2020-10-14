@@ -82,3 +82,33 @@ function showNotifikasiActions() {
         console.error('Fitur notifikasi tidak diijinkan.');
     }
 }
+
+// Menampilkan Notifikasi Berdasarkan Tag
+function showNotifikasiTag() {
+    const title1 = 'Notifikasi dengan Tag - 1';
+    const options1 = {
+        body: 'Anggota tag 1',
+        tag: 'message-group-1'
+    };
+    // notifikasi kedua
+    const title2 = 'Notifikasi dengan Tag - 2';
+    const options2 = {
+        body: 'Anggota tag 2',
+        tag: 'message-group-2'
+    };
+    // notifikasi ketiga
+    const title3 = 'Notifikasi dengan Tag - 3';
+    const options3 = {
+        body: 'Anggota tag 1',
+        tag: 'message-group-1'
+    };
+    if (Notification.permission === 'granted') {
+    navigator.serviceWorker.ready.then(function(registration) {
+            registration.showNotification(title1, options1);
+            registration.showNotification(title2, options2);
+            registration.showNotification(title3, options3);
+        });
+    } else {
+    console.error('Fitur notifikasi tidak diijinkan.');
+    }
+}
