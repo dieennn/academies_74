@@ -112,3 +112,25 @@ function showNotifikasiTag() {
     console.error('Fitur notifikasi tidak diijinkan.');
     }
 }
+
+// Menampilkan Notifikasi dengan Renotify/Getar
+/**
+ * https://www.dicoding.com/academies/74/tutorials/2965?from=2960
+ * * Pastikan untuk hanya menambahkan properti renotify jika properti tag juga dipakai. 
+ * * Akan muncul sebuah error jika kita menambahkan renotify disebuah notifikasi yang tidak memiliki tag.
+ */
+function showNotifikasiRenotify() {
+    const title = 'Notifikasi dengan Renotify';
+    const options = {
+        body: 'Renotify',
+        tag: 'message-group-1',
+        renotify: true,
+    };
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+            registration.showNotification(title, options);
+        });
+    } else {
+        console.error('Fitur notifikasi tidak diijinkan.');
+    }
+}
