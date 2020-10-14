@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
                elm.innerHTML = xhttp.responseText;
             });
 
-            document.querySelectorAll(".sidenav a, .topnav a").forEach(function(elm) {
-               elm.addEventListener("click", function(event) {
+            document.querySelectorAll(".sidenav a, .topnav a").forEach(function (elm) {
+               elm.addEventListener("click", function (event) {
                   var sidenav = document.querySelector(".sidenav");
                   M.Sidenav.getInstance(sidenav).close()
 
@@ -36,17 +36,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
    function loadPage(page) {
       var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-         if(this.readyState === 4) {
+      xhttp.onreadystatechange = function () {
+         if (this.readyState === 4) {
             var content = document.querySelector("#body-content");
+            let contentArticle = document.querySelector("#articles")
             if (page === "home") {
+               contentArticle.style.display = 'block';
                getArticles();
             } else if (page === "saved") {
+               contentArticle.style.display = 'none';
                getSavedArticles();
+            } else {
+               contentArticle.style.display = 'none';
             }
-            if(this.status === 200) {
+            if (this.status === 200) {
                content.innerHTML = xhttp.responseText;
-            } else if(this.status === 404) {
+            } else if (this.status === 404) {
                content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
             } else {
                content.innerHTML = "<p>Ups... Halaman tidak dapat diakses.</p>"
