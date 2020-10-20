@@ -2,10 +2,12 @@ let loadHome = () => {
     showLoader()
     let dtMatch = getMatches();
     let dtTopScore = getTopGoal();
+    let dtStanding = getStandings();
     let select = ''
     let valSelect = ''
     let match = ''
     let topScore = ''
+    let standing = ''
     let html = ''
     html += `
     <div class="card hoverable">
@@ -14,10 +16,10 @@ let loadHome = () => {
         </div>
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
-                <li class="tab"><a class="active" href="#match">Match</a></li>
+                <li class="tab"><a href="#match">Match</a></li>
                 <li class="tab"><a href="#news">News</a></li>
                 <li class="tab"><a href="#topScore">Top Score</a></li>
-                <li class="tab"><a href="#standing">Standing</a></li>
+                <li class="tab"><a class="active" href="#standing">Standing</a></li>
                 <li class="tab"><a href="#test6">Test 3</a></li>
             </ul>
         </div>
@@ -256,13 +258,67 @@ let loadHome = () => {
         hideLoader()
     });
 
+    /**
+     * * STANDING
+     */
+    dtStanding.then(data => {
+        showLoader()
+        standing += `
+            <table class="striped responsive-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>Games</th>
+                    <th>Wins</th>
+                    <th>Draws</th>
+                    <th>Losses</th>
+                    <th>For</th>
+                    <th>Against</th>
+                    <th>+/-</th>
+                    <th>Points</th>
+                </tr>
+                </thead>
+        
+                <tbody>
+        `;
+        if(data) {
+            data.standings[0].table.map((data, i) => {
+                standing += `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td><img class="materialboxed" width="50" src="${data.team.crestUrl}" data-caption="${data.team.name}">${data.team.name}</td>
+                        <td>${data.playedGames}</td>
+                        <td>${data.won}</td>
+                        <td>${data.draw}</td>
+                        <td>${data.lost}</td>
+                        <td>${data.goalsFor}</td>
+                        <td>${data.goalsAgainst}</td>
+                        <td>${data.goalDifference}</td>
+                        <td>${data.points}</td>
+                    </tr>
+                `;
+            })
+        }
+        standing += `
+            </tbody>
+            </table>
+        `;
+        document.getElementById("standing").innerHTML = standing;
+
+        var materialboxed = document.querySelectorAll('.materialboxed');
+        M.Materialbox.init(materialboxed, {});
+        
+        hideLoader()
+    });
+
 
     html += `
         <div class="card-content">
             <div id="match"></div>
             <div id="news"></div>
             <div id="topScore"></div>
-            <div id="standing">Test 2</div>
+            <div id="standing"></div>
             <div id="test6">Test 3</div>
         </div>
     </div>
