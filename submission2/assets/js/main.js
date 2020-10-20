@@ -23,6 +23,9 @@ let loadHome = () => {
         </div>
     `;
 
+    /**
+     * * MATCH
+     */
     dtMatch.then(data => {
         // leagueName
         document.getElementById("leagueName").innerHTML = `${data.competition.area.name}, ${data.competition.name}`;
@@ -30,7 +33,7 @@ let loadHome = () => {
         match += `
             <div class="row">
                 <div class="col s4 right-align" style="margin-top: 2.5%;">
-                  <a class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+                  <a id="prev" class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
                 </div>
                 <div class="col s3 center-align">
                     <label>Match Day</label>
@@ -39,7 +42,7 @@ let loadHome = () => {
                     </select>
                 </div>
                 <div class="col s4 left-align" style="margin-top: 2.5%;">
-                    <a class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_forward</i></a>
+                    <a id="next" class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_forward</i></a>
                 </div>
             </div>
         `;
@@ -91,16 +94,31 @@ let loadHome = () => {
                         `;
                     })
                 }
+
                 if(type === 'select') {
-                    // document.getElementsByTagName("tbody")[0].innerHTML = '';
-                    // document.getElementsByTagName("tbody")[0].innerHTML = vaTr;
-                    console.log(vaTr)
+                    showLoader()
+                    vaTr = ''
+                    valTr()
+                    document.getElementsByTagName("tbody")[0].innerHTML = '';
+                    document.getElementsByTagName("tbody")[0].innerHTML = vaTr;
+                    hideLoader();
+                } else if(type === 'prevnext') {
+                    showLoader()
+                    vaTr = ''
+                    valTr()
+                    document.getElementsByTagName("tbody")[0].innerHTML = '';
+                    document.getElementsByTagName("tbody")[0].innerHTML = vaTr;
+                    hideLoader();
                 } else {
                     valTr()
                 }
             }
 
             // Find data match if status schedule to find round active
+            /**
+             * * hadeuh ternyata udah ada info tentang round active di endpoind standing, 
+             * * tau gitu kaga usah susah payah filter data cuman mau nyari round active -_-"
+             */
             let dt = [];
             let count = data.matches.length;
             let res = data.matches[count-1].matchday;
@@ -123,8 +141,19 @@ let loadHome = () => {
         sel.value=valSelect;
 
         let getSelectMatchDay = () => {
-            // console.log(sel.value)
-            dtGroupMatchday(sel.value, 'select')
+            dtGroupMatchday(sel.value, 'select');
+            let getCountSelect = document.getElementById("select").children.length;
+            if(parseInt(sel.value) === 1) {
+                btnPrev.classList.add('disabled');
+                btnNext.classList.remove('disabled');
+            } else if(parseInt(sel.value) === getCountSelect) {
+                btnNext.classList.add('disabled');
+                btnPrev.classList.remove('disabled');
+            } else {
+                dtGroupMatchday(parseInt(sel.value)-1, 'prevnext');
+                btnNext.classList.remove('disabled');
+                btnPrev.classList.remove('disabled');
+            }
         }
 
         sel.addEventListener("change", getSelectMatchDay);        
@@ -133,9 +162,60 @@ let loadHome = () => {
         var select = document.querySelectorAll('select');
         M.FormSelect.init(select, {});
 
+
+        // prev & next
+
+        /**
+         * * https://stackoverflow.com/a/49833959/9446622
+         * * change trigger value select option in materialize
+         */
+        
+        let changeValueSelect = () => {            
+            if (typeof(Event) === 'function') {
+                var event = new Event('change');
+            } else {
+                var event = document.createEvent('Event');
+                event.initEvent('change', true);
+            }
+            sel.dispatchEvent(event);
+        }
+        let btnPrev = document.getElementById('prev');
+        let btnNext = document.getElementById('next');
+
+        let prev = () => {
+            sel.value=parseInt(sel.value)-1;
+            changeValueSelect()
+            if(parseInt(sel.value) === 1) {
+                btnPrev.classList.add('disabled');
+            } else {
+                dtGroupMatchday(parseInt(sel.value), 'prevnext');
+                btnPrev.classList.remove('disabled');
+                btnNext.classList.remove('disabled');
+            }
+        }
+
+        let next = () => {
+            sel.value=parseInt(sel.value)+1;
+            changeValueSelect()
+            let getCountSelect = document.getElementById("select").children.length;
+            if(parseInt(sel.value) === getCountSelect) {
+                btnNext.classList.add('disabled');
+            } else {
+                dtGroupMatchday(parseInt(sel.value), 'prevnext');
+                btnPrev.classList.remove('disabled');
+                btnNext.classList.remove('disabled');
+            }
+        }
+
+        btnPrev.addEventListener("click", prev);
+        btnNext.addEventListener("click", next);
+
         hideLoader();
     })
 
+    /**
+     * * TOP SCORE
+     */
     dtTopScore.then(data => {
         topScore += `
             <table class="striped responsive-table">
@@ -188,49 +268,6 @@ let loadHome = () => {
     </div>
     `;
     document.getElementById("body-content").innerHTML = html;
-}
-
-var loadMatches = () => {
-    showLoader()
-    var matches = getMatches()
-    matches.then(data => {
-        matchesData = data;
-        var matchdays = groupBy(data.matches, 'matchday');
-
-        html = ''
-        for (const key in matchdays) {
-            if (key != 'null') {
-                html += `
-                <h5>Group stage - ${key} of 6</h5>
-                <div class="row">
-              `
-                matchdays[key].forEach(match => {
-                    html += `
-            <div class="col s12 m6 l6">
-              <div class="card">
-                <div class="card-content card-match">
-                <div style="text-align: center"><h6>${dateToDMY(new Date(match.utcDate))}</h6></div>
-                  <div class="col s10">${match.homeTeam.name}</div>
-                  <div class="col s2">${match.score.fullTime.homeTeam}</div>
-                  <div class="col s10">${match.awayTeam.name}</div>
-                  <div class="col s2">${match.score.fullTime.awayTeam}</div>
-                </div>
-                <div class="card-action right-align">
-                <a class="waves-effect waves-light btn-small" onclick="insertMatchListener(${match.id})"><i class="material-icons left">star</i>Add to Favorite</a>
-                </div>
-              </div>
-            </div>
-              `
-                });
-                html += `
-          </div>`
-            }
-
-        }
-        document.getElementById("header-title").innerHTML = 'Matches';
-        document.getElementById("main-content").innerHTML = html;
-        hideLoader()
-    })
 }
 
 var groupBy = function (xs, key) {
