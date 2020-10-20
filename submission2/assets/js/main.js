@@ -3,11 +3,12 @@ let loadHome = () => {
     let dtMatch = getMatches();
     let dtTopScore = getTopGoal();
     let select = ''
+    let valSelect = ''
     let match = ''
     let topScore = ''
     let html = ''
     html += `
-    <div class="card">
+    <div class="card hoverable">
         <div class="card-content">
             <h1 id="leagueName"></h1>
         </div>
@@ -28,10 +29,18 @@ let loadHome = () => {
         // select MatchDay
         match += `
             <div class="row">
-                <label>Match Day</label>
-                <select id="select" onchange="console.log(this.value)">
+                <div class="col s4 right-align" style="margin-top: 2.5%;">
+                  <a class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+                </div>
+                <div class="col s3 center-align">
+                    <label>Match Day</label>
+                    <select id="select" >
 
-                </select>               
+                    </select>
+                </div>
+                <div class="col s4 left-align" style="margin-top: 2.5%;">
+                    <a class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_forward</i></a>
+                </div>
             </div>
         `;
         match += `
@@ -53,7 +62,7 @@ let loadHome = () => {
                     <tbody>
         `;
         let groupMatchday = groupBy(data.matches, 'matchday');
-        if(groupMatchday) {
+        // if(groupMatchday) {
             // select MatchDay   
             for(let key in groupMatchday) {
                 select += `
@@ -61,50 +70,64 @@ let loadHome = () => {
                 `;
             }
 
-            let dtGroupMatchday = (matchday) => {
-                groupMatchday[matchday].map((data, i) => {
-                    let date = new Date(data.utcDate);
-                    match += `
-                        <tr>
-                            <td>${i+1}</td>
-                            <td>${date.toLocaleString()}</td>
-                            <td>${data.status}</td>
-                            <td>${data.homeTeam.name}</td>
-                            <td>${(data.score.fullTime.homeTeam != null) ? data.score.fullTime.homeTeam : '-'} : ${(data.score.fullTime.awayTeam != null) ? data.score.fullTime.awayTeam : '-'}</td>
-                            <td>${data.awayTeam.name}</td>
-                            <td>${(data.score.halfTime.homeTeam != null) ? data.score.halfTime.homeTeam : '-'} : ${(data.score.halfTime.awayTeam != null) ? data.score.halfTime.awayTeam : '-'}</td>
-                            <td>${(data.score.extraTime.homeTeam != null) ? data.score.extraTime.homeTeam : '-'} : ${(data.score.extraTime.awayTeam != null) ? data.score.extraTime.awayTeam : '-'}</td>
-                            <td>${(data.score.penalties.homeTeam != null) ? data.score.penalties.homeTeam : '-'} : ${(data.score.penalties.awayTeam != null) ? data.score.penalties.awayTeam : '-'}</td>
-                        </tr>
-                    `;
-                })
+            let vaTr = '';
+            let dtGroupMatchday = (matchday, type = null) => {
+                valSelect = matchday;
+                let valTr = () => {
+                    groupMatchday[matchday].map((data, i) => {
+                        let date = new Date(data.utcDate);
+                        vaTr += `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${date.toLocaleString()}</td>
+                                <td>${data.status}</td>
+                                <td>${data.homeTeam.name}</td>
+                                <td>${(data.score.fullTime.homeTeam != null) ? data.score.fullTime.homeTeam : '-'} : ${(data.score.fullTime.awayTeam != null) ? data.score.fullTime.awayTeam : '-'}</td>
+                                <td>${data.awayTeam.name}</td>
+                                <td>${(data.score.halfTime.homeTeam != null) ? data.score.halfTime.homeTeam : '-'} : ${(data.score.halfTime.awayTeam != null) ? data.score.halfTime.awayTeam : '-'}</td>
+                                <td>${(data.score.extraTime.homeTeam != null) ? data.score.extraTime.homeTeam : '-'} : ${(data.score.extraTime.awayTeam != null) ? data.score.extraTime.awayTeam : '-'}</td>
+                                <td>${(data.score.penalties.homeTeam != null) ? data.score.penalties.homeTeam : '-'} : ${(data.score.penalties.awayTeam != null) ? data.score.penalties.awayTeam : '-'}</td>
+                            </tr>
+                        `;
+                    })
+                }
+                if(type === 'select') {
+                    // document.getElementsByTagName("tbody")[0].innerHTML = '';
+                    // document.getElementsByTagName("tbody")[0].innerHTML = vaTr;
+                    console.log(vaTr)
+                } else {
+                    valTr()
+                }
             }
 
             // Find data match if status schedule to find round active
+            let dt = [];
+            let count = data.matches.length;
+            let res = data.matches[count-1].matchday;
             for(let key in data.matches) {
                 if(data.matches[key].status === 'SCHEDULED') {
-                    dtGroupMatchday(data.matches[key].matchday)
-                    break
-                } else if(data.matches[key].status === 'FINISHED') {
-                    dtGroupMatchday(data.matches[key].matchday)
-                    break
-                } else {
-                    dtGroupMatchday(data.matches[key].matchday)
-                    break
+                    dt.push(data.matches[key])
                 }
             }
-        }
+            
+            dt.length ? dtGroupMatchday(dt[0].matchday) : dtGroupMatchday(res);
+        // }
         match += `
+            ${vaTr}
             </tbody>
             </table>
         `;
         document.getElementById("match").innerHTML = match;
         let sel = document.getElementById('select');
-        let getComboA = (selectObject) => {
-            var value = selectObject.value;
-            console.log(value);
-        }
         sel.innerHTML = select;
+        sel.value=valSelect;
+
+        let getSelectMatchDay = () => {
+            // console.log(sel.value)
+            dtGroupMatchday(sel.value, 'select')
+        }
+
+        sel.addEventListener("change", getSelectMatchDay);        
 
         // select
         var select = document.querySelectorAll('select');

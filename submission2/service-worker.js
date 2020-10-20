@@ -42,10 +42,10 @@ self.addEventListener("fetch", function(event) {
             return response;
          }
 
-         console.log(
-            "ServiceWorker: Memuat aset dari server: ",
-            event.request.url
-         );
+         // console.log(
+         //    "ServiceWorker: Memuat aset dari server: ",
+         //    event.request.url
+         // );
          return fetch(event.request);
       })
    );
