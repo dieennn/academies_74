@@ -1,4 +1,5 @@
-const base_url = "https://aqueous-woodland-96253.herokuapp.com/";
+// const base_url = "https://aqueous-woodland-96253.herokuapp.com/";
+const base_url = "https://readerapi.codepolitan.com/";
 // articles
 
 let status = (response) => {

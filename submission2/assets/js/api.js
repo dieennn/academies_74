@@ -29,7 +29,8 @@ let json = response => {
 }
 
 let error = error => {
-  console.log("Error: " + error);
+  // console.log("Error: " + error);
+  return error;
 }
 
 let getStandings = () => {
@@ -46,6 +47,14 @@ let getMatches = () => {
 
 let getTeams = () => {
   return getData(teams_ep)
+    .then(status)
+    .then(json)
+}
+
+// get detailTemas
+let getDetailTeams = (id) => {  
+  let detailTeams_ep = `${base_url}teams/${id}`
+  return getData(detailTeams_ep)
     .then(status)
     .then(json)
 }
