@@ -11,6 +11,7 @@ let loadHome = () => {
     let standing = ''
     let teams = ''
     let html = ''
+    {/* <li class="tab"><a href="#news">News</a></li> */}
     html += `
     <div class="card hoverable">
         <div class="card-content">
@@ -19,7 +20,6 @@ let loadHome = () => {
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
                 <li class="tab"><a class="active" href="#match">Match</a></li>
-                <li class="tab"><a href="#news">News</a></li>
                 <li class="tab"><a href="#topScore">Top Score</a></li>
                 <li class="tab"><a href="#standing">Standing</a></li>
                 <li class="tab"><a href="#teams">Teams</a></li>
@@ -31,7 +31,7 @@ let loadHome = () => {
      * * MATCH
      */
     dtMatch.then(data => {
-        console.log('MATCH',data)
+        // console.log('MATCH',data)
         // leagueName
         document.getElementById("leagueName").innerHTML = `${data.competition.area.name}, ${data.competition.name}`;
         // select MatchDay
@@ -171,9 +171,9 @@ let loadHome = () => {
         // prev & next
 
         /**
-    //      * * https://stackoverflow.com/a/49833959/9446622
-    //      * * change trigger value select option in materialize
-    //      */
+         * * https://stackoverflow.com/a/49833959/9446622
+         * * change trigger value select option in materialize
+         */
         
         let changeValueSelect = () => {            
             if (typeof(Event) === 'function') {
@@ -225,7 +225,7 @@ let loadHome = () => {
      * * TOP SCORE
      */
     dtTopScore.then(data => {
-        console.log('TOP SCORE',data)
+        // console.log('TOP SCORE',data)
         topScore += `
             <table class="striped responsive-table">
                 <thead>
@@ -272,7 +272,7 @@ let loadHome = () => {
      * * STANDING
      */
     dtStanding.then(data => {
-        console.log('STANDING', data)
+        // console.log('STANDING', data)
         showLoader()
         standing += `
             <table class="striped responsive-table">
@@ -389,18 +389,174 @@ let loadHome = () => {
             let detailTeams = '';
             dtDetailTeams.then(data => {
                 selTeams.style.display = 'none';
+                let {phone, website, email} = "";
+                let detailTeamsCompetitions = '';
+                let detailTeamsPlayers = '';
+                if(data.phone) {
+                    phone = `<a href="tel: ${data.phone}">${data.phone}</a>`;
+                } else {
+                    phone = ` - `;
+                }
+                if(data.website) {
+                    website = `<a href="${data.website}">${data.website}</a>`;
+                } else {
+                    website = ` - `;
+                }
+                if(data.email) {
+                    email = `<a href="mailto: ${data.email}">${data.email}</a>`;
+                } else {
+                    email = ` - `;
+                }
+
+                detailTeamsCompetitions += `
+                    <table class="striped responsive-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Competition</th>
+                                <th>Country</th>
+                                <th>Code</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                `;
+
+                if(data.activeCompetitions) {
+                    data.activeCompetitions.map((data, i) => {
+                        detailTeamsCompetitions += `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${data.name}</td>
+                                <td>${data.area.name}</td>
+                                <td>${data.code}</td>
+                            </tr>
+                        `;
+                    })
+                }
+
+                detailTeamsCompetitions += `
+                        </tbody>
+                    </table>
+                `;
+
+                detailTeamsPlayers += `
+                    <table class="striped responsive-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>ShirtNumber</th>
+                                <th>Role</th>
+                                <th>Birth of Date</th>
+                                <th>Nationality</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                `;
+
+                if(data.squad) {
+                    data.squad.map((data, i) => {
+                        detailTeamsPlayers += `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${data.name ? data.name : '-'}</td>
+                                <td>${data.position ? data.position : '-'}</td>
+                                <td>${data.shirtNumber ? data.shirtNumber : '-'}</td>
+                                <td>${data.role ? data.role : '-'}</td>
+                                <td>${data.dateOfBirth ? data.dateOfBirth : '-'}</td>
+                                <td>${data.nationality ? data.nationality : '-'}</td>
+                            </tr>
+                        `;
+                    })
+                }
+
+                detailTeamsPlayers += `
+                        </tbody>
+                    </table>
+                `;
+
                 detailTeams += `
-                <div class="container row">
-                    <div class="col s2 left-align">
-                        <a id="back" class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+                <div class="container">
+                    <div class="row">
+                        <div class="col s2 left-align">
+                            <a id="back" class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+                        </div>
+                        <div class="col s10 left-align">
+                            ${data.name}
+                        </div>
                     </div>
-                    <div class="col s10 left-align">
-                        ${data.name}
+
+                </div>
+                <div class="row">
+                    <div class="col s12 m4">
+                        <img class="materialboxed" weight="100%" src="${data.crestUrl}" data-caption="${data.name}">
+                    </div>
+                    <div class="col s12 m8">
+                        <div class="card hoverable">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s12 m4">
+                                        Name : <b>${data.name ? data.name : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m4">
+                                        Phone : <b>${phone}</b>
+                                    </div>
+                                    <div class="col s12 m4">
+                                        Website : <b>${website}</b>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 m4">
+                                        Shost Name : <b>${data.shortName ? data.shortName : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m4">
+                                        Address : <b>${data.address ? data.address : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m4">
+                                        Email : <b>${email}</b>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 m4">
+                                        Founded : <b>${data.founded ? data.founded : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m4">
+                                        Club Colors : <b>${data.clubColors ? data.clubColors : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m4">
+                                        Venue : <b>${data.venue ? data.venue : " - "}</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="card hoverable">
+                        <div class="card-content">
+                            <span class="card-title">Active Competitions</span>
+                            ${detailTeamsCompetitions}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="card hoverable">
+                        <div class="card-content">
+                            <span class="card-title">Players</span>
+                            ${detailTeamsPlayers}
+                        </div>
                     </div>
                 </div>
                 `;
                 
-                console.log(data);
+                // console.log(data);
 
                 selDetailTeams.style.display = '';
                 selDetailTeams.innerHTML = detailTeams;
@@ -413,6 +569,9 @@ let loadHome = () => {
 
                 let btnBack = document.getElementById('back')
                 btnBack.addEventListener("click", backDetailTeams);
+
+                var materialboxed = document.querySelectorAll('.materialboxed');
+                M.Materialbox.init(materialboxed, {});
             });
         }
         
@@ -434,10 +593,10 @@ let loadHome = () => {
     });
 
 
+    {/* <div id="news"><h3 class="center-align">Upcoming</h3></div> */}
     html += `
         <div class="card-content">
             <div id="match"></div>
-            <div id="news"><h3 class="center-align">Upcoming</h3></div>
             <div id="topScore"></div>
             <div id="standing"></div>
             <div id="teams"></div>
@@ -452,4 +611,4 @@ var groupBy = function (xs, key) {
       (rv[x[key]] = rv[x[key]] || []).push(x);
       return rv;
     }, {});
-  };
+};
