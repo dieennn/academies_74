@@ -1,9 +1,5 @@
 let loadHome = () => {
     showLoader()
-    let dtMatch = getMatches();
-    let dtTopScore = getTopGoal();
-    let dtStanding = getStandings();
-    let dtTeams = getTeams();
     let select = ''
     let valSelect = ''
     let match = ''
@@ -19,10 +15,10 @@ let loadHome = () => {
         </div>
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
-                <li class="tab"><a href="#match">Match</a></li>
+                <li class="tab"><a class="active" href="#match">Match</a></li>
                 <li class="tab"><a href="#topScore">Top Score</a></li>
                 <li class="tab"><a href="#standing">Standing</a></li>
-                <li class="tab"><a class="active" href="#teams">Teams</a></li>
+                <li class="tab"><a href="#teams">Teams</a></li>
             </ul>
         </div>
     `;
@@ -31,6 +27,7 @@ let loadHome = () => {
      * * MATCH
      */
     let parsingMatch = () => {
+        let dtMatch = getMatches();
         dtMatch.then(data => {
             // console.log('MATCH',data)
             // leagueName
@@ -227,6 +224,7 @@ let loadHome = () => {
      * * TOP SCORE
      */
     let parsingTopScore = () => {
+        let dtTopScore = getTopGoal();
         dtTopScore.then(data => {
             // console.log('TOP SCORE',data)
             topScore += `
@@ -276,6 +274,7 @@ let loadHome = () => {
      * * STANDING
      */
     let parsingStanding = () => {
+        let dtStanding = getStandings();
         dtStanding.then(data => {
             // console.log('STANDING', data)
             showLoader()
@@ -336,6 +335,7 @@ let loadHome = () => {
      * * TEAMS
      */
     let parsingTeams = () => {
+        let dtTeams = getTeams();
         dtTeams.then(data => {
             showLoader();
             // console.log(data)
@@ -641,11 +641,40 @@ let loadHome = () => {
     </div>
     `;
     document.getElementById("body-content").innerHTML = html;
+    let tab = document.getElementsByClassName('tab');
+    let dd = data => {
+        // console.log(data.replace(/^#/, ''))
+        let dtTab = data.replace(/^#/, '');
+        switch (dtTab) {
+            case "match":
+                parsingMatch();
+                break;
+            case "topScore":
+                parsingTopScore();
+                break;
+            case "standing":
+                parsingStanding();
+                break;
+            case "teams":
+                parsingTeams();
+                break;
+        
+            default:
+                break;
+        }
+    }
 
-    parsingMatch();
-    parsingTopScore();
-    parsingStanding();
-    parsingTeams();
+    for(let a of tab) {
+        a.addEventListener("click", function() {
+            dd(this.firstChild.hash)
+        });
+    }
+    // console.log(tabss)
+
+    // parsingMatch();
+    // parsingTopScore();
+    // parsingStanding();
+    // parsingTeams();
 }
 
 let groupBy = function (xs, key) {

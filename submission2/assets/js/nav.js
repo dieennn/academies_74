@@ -73,13 +73,6 @@ var showLoader = () => {
  var hideLoader = () => {
    document.getElementById("loader").innerHTML = '';
  }
-
- var groupBy = function (xs, key) {
-   return xs.reduce(function (rv, x) {
-     (rv[x[key]] = rv[x[key]] || []).push(x);
-     return rv;
-   }, {});
- };
  
  var dateToDMY = date => {
    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
