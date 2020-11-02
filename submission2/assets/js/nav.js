@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
    if(page == "") {
       requestPermission()
       loadHome()
+   } else if(page == "home") {
+      loadHome()
    } else {
       loadPage(page);
    }

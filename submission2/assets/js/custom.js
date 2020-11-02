@@ -1,7 +1,7 @@
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
         navigator.serviceWorker
-            .register("https://mpwa-dicoding.netlify.app/submission2/service-worker.js")
+            .register("/service-worker.js")
             .then(function () {
                 console.log("Pendaftaran ServiceWorker Berhasil");
             })

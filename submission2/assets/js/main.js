@@ -773,80 +773,87 @@ let loadSaved = () => {
     let dtLoadSaved = getSavedTeam();
     dtLoadSaved.then(data => {
         // console.log(data)
-        saved += `<div class="row">`;
-        for(let dt in data) {
-            let {phone, website, email} = "";
-            let detailTeamsCompetitions = '';
-            let detailTeamsPlayers = '';
-            if(data[dt].phone) {
-                phone = `<a href="tel: ${data[dt].phone}">${data[dt].phone}</a>`;
-            } else {
-                phone = ` - `;
-            }
-            if(data[dt].website) {
-                website = `<a target="_blank" href="${data[dt].website}">${data[dt].website}</a>`;
-            } else {
-                website = ` - `;
-            }
-            if(data[dt].email) {
-                email = `<a href="mailto: ${data[dt].email}">${data[dt].email}</a>`;
-            } else {
-                email = ` - `;
-            }
-            saved += `
-                
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image blue lighten-3">
-                            <img class="materialboxed" data-caption="${data[dt].name}" src="${data[dt].crestUrl}" width="267" height="267">
-                            <span class="card-title blue" style="border-radius: 0 5rem 0 0;">${data[dt].name}</span>
-                            <a class="btn-floating halfway-fab waves-effect waves-light red">
-                                <i class="material-icons btn_saveUnsive" id="${data[dt].id}">favorite</i>
-                            </a>
-                        </div>
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col s12 m12">
-                                    Name : <b>${data[dt].name ? data[dt].name : " - "}</b>
-                                </div>
-                                <div class="col s12 m12">
-                                    Phone : <b>${phone}</b>
-                                </div>
-                                <div class="col s12 m12">
-                                    Website : <b>${website}</b>
-                                </div>
+        if(data.length) {
+            saved += `<div class="row">`;
+            for(let dt in data) {
+                let {phone, website, email} = "";
+                let detailTeamsCompetitions = '';
+                let detailTeamsPlayers = '';
+                if(data[dt].phone) {
+                    phone = `<a href="tel: ${data[dt].phone}">${data[dt].phone}</a>`;
+                } else {
+                    phone = ` - `;
+                }
+                if(data[dt].website) {
+                    website = `<a target="_blank" href="${data[dt].website}">${data[dt].website}</a>`;
+                } else {
+                    website = ` - `;
+                }
+                if(data[dt].email) {
+                    email = `<a href="mailto: ${data[dt].email}">${data[dt].email}</a>`;
+                } else {
+                    email = ` - `;
+                }
+                saved += `
+                    
+                    <div class="col s12 m4">
+                        <div class="card hoverable">
+                            <div class="card-image blue lighten-3">
+                                <img class="materialboxed" data-caption="${data[dt].name}" src="${data[dt].crestUrl}" width="267" height="267">
+                                <span class="card-title blue" style="border-radius: 0 5rem 0 0;">${data[dt].name}</span>
+                                <a class="btn-floating halfway-fab waves-effect waves-light red">
+                                    <i class="material-icons btn_saveUnsive" id="${data[dt].id}">favorite</i>
+                                </a>
                             </div>
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s12 m12">
+                                        Name : <b>${data[dt].name ? data[dt].name : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m12">
+                                        Phone : <b>${phone}</b>
+                                    </div>
+                                    <div class="col s12 m12">
+                                        Website : <b>${website}</b>
+                                    </div>
+                                </div>
 
-                            <div class="row">
-                                <div class="col s12 m12">
-                                    Shost Name : <b>${data[dt].shortName ? data[dt].shortName : " - "}</b>
+                                <div class="row">
+                                    <div class="col s12 m12">
+                                        Shost Name : <b>${data[dt].shortName ? data[dt].shortName : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m12">
+                                        Address : <b>${data[dt].address ? data[dt].address : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m12">
+                                        Email : <b>${email}</b>
+                                    </div>
                                 </div>
-                                <div class="col s12 m12">
-                                    Address : <b>${data[dt].address ? data[dt].address : " - "}</b>
-                                </div>
-                                <div class="col s12 m12">
-                                    Email : <b>${email}</b>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col s12 m12">
-                                    Founded : <b>${data[dt].founded ? data[dt].founded : " - "}</b>
-                                </div>
-                                <div class="col s12 m12">
-                                    Club Colors : <b>${data[dt].clubColors ? data[dt].clubColors : " - "}</b>
-                                </div>
-                                <div class="col s12 m12">
-                                    Venue : <b>${data[dt].venue ? data[dt].venue : " - "}</b>
+                                <div class="row">
+                                    <div class="col s12 m12">
+                                        Founded : <b>${data[dt].founded ? data[dt].founded : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m12">
+                                        Club Colors : <b>${data[dt].clubColors ? data[dt].clubColors : " - "}</b>
+                                    </div>
+                                    <div class="col s12 m12">
+                                        Venue : <b>${data[dt].venue ? data[dt].venue : " - "}</b>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                        
-                        `;
-        };
-        saved += `</div>`;
+                            
+                            `;
+            };
+            saved += `</div>`;
+        } else {
+            saved += `<div class="valign center">
+                        <h3><i class="large material-icons">sentiment_dissatisfied</i> Data is empty <i class="large material-icons">sentiment_dissatisfied</i></h3>
+                    </div>
+            `;
+        }
 
         let elSaved = document.getElementById('body-content').innerHTML = saved;
 
@@ -863,18 +870,6 @@ let loadSaved = () => {
                 saveUnsive(this.id)
             });
         }
-
-        // set fav when find result in indexdb
-        // let idbe = getSavedTeam();
-        // idbe.then(idb => {
-        //     var tm = idb.filter(el => el.id == data.id)[0]
-        //     let selbtn_saveUnsive = document.getElementsByClassName("btn_saveUnsive")[0];
-        //     if(tm) {
-        //         selbtn_saveUnsive.innerHTML = "favorite";
-        //     } else {
-        //         selbtn_saveUnsive.innerHTML = "favorite_border";
-        //     }
-        // })
 
         var materialboxed = document.querySelectorAll('.materialboxed');
         M.Materialbox.init(materialboxed, {});
