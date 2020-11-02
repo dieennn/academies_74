@@ -5,8 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
    // Load page content
    let page = window.location.hash.substr(1);
-   if (page == "") page = "home";
-   loadPage(page);
+   // if (page == "") page = "home";
+   if(page == "") {
+      requestPermission()
+      loadHome()
+   } else {
+      loadPage(page);
+   }
 });
 
 let loadNav = () => {
@@ -24,7 +29,17 @@ let loadNav = () => {
                M.Sidenav.getInstance(sidenav).close()
 
                page = event.target.getAttribute("href").substr(1);
-               loadPage(page);
+               if(page === "home") {
+                  loadHome(page);
+               } else if(page === "random") {
+                  loadHome(page);
+                  // loadPage(page);
+               } else if(page === "saved") {
+                  // loadPage(page);
+                  loadSaved();
+               } else {
+                  loadPage(page);
+               }
             });
          });
       }
@@ -36,23 +51,24 @@ let loadNav = () => {
 }
 
 let loadPage = (page) => {
-   // let xhttp = new XMLHttpRequest();
-   // xhttp.open("GET", "pages/" + page + ".html", true);
-   // xhttp.onreadystatechange = async function() {
-   //    if(this.readyState === 4) {
-   //       let content = document.querySelector("#body-content");
-   //       if(this.status === 200) {
-   //          content.innerHTML = xhttp.responseText;
-   //       } else if(this.status === 404) {
-   //          content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
-   //       } else {
-   //          content.innerHTML = "<p>Ups... Halaman tidak dapat diakses.</p>"
-   //       }
-   //    }
-   // };
-   // xhttp.send();
+   console.log(page)
+   let xhttp = new XMLHttpRequest();
+   xhttp.open("GET", "pages/" + page + ".html", true);
+   xhttp.onreadystatechange = async function() {
+      if(this.readyState === 4) {
+         let content = document.querySelector("#body-content");
+         if(this.status === 200) {
+            content.innerHTML = xhttp.responseText;
+         } else if(this.status === 404) {
+            content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
+         } else {
+            content.innerHTML = "<p>Ups... Halaman tidak dapat diakses.</p>"
+         }
+      }
+   };
+   xhttp.send();
    // if(page == 'home') loadMatches()
-   if(page == 'home') loadHome()
+   // if(page == 'home') loadHome()
 }
 
 var showLoader = () => {

@@ -43,11 +43,11 @@ let dbx = idb.open('intifada-fci', 1, upgradeDb => {
   }
 });
 
-let getFavTeams = () => {
+let getSavedTeam = () => {
   return dbx.then(db => {
-    let tx = db.transaction('teams', 'readonly');
-    let store = tx.objectStore('teams');
-    return store.getAll();
+      var tx = db.transaction('teams', 'readonly');
+      var store = tx.objectStore('teams');
+      return store.getAll();
   })
 }
 

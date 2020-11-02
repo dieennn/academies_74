@@ -1,16 +1,22 @@
 {
-    "name": "My First PWA",
-    "short_name": "My PWA",
-    "description": "APlikasi PWA",
+    "name": "MPWA Submission2",
+    "short_name": "MPWA S2",
+    "description": "Membangun Progressive Web Apps",
     "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#00897B",
-    "theme_color": "#00897B",
+    "background_color": "#3498db",
+    "theme_color": "#2980b9",
     "icons": [
         {
-            "src": "./icon.png",
+          "src": "./assets/img/192x192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        },        
+        {
+            "src": "./assets/img/512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "gcm_sender_id": "986915851506"
 }

@@ -1,5 +1,4 @@
-let loadHome = () => {
-    showLoader()
+let loadHome = page => {
     let select = ''
     let valSelect = ''
     let match = ''
@@ -8,25 +7,65 @@ let loadHome = () => {
     let teams = ''
     let html = ''
     {/* <li class="tab"><a href="#news">News</a></li> */}
-    html += `
-    <div class="card hoverable">
-        <div class="card-content">
-            <h1 id="leagueName"></h1>
-        </div>
-        <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width">
-                <li class="tab"><a class="active" href="#match">Match</a></li>
-                <li class="tab"><a href="#topScore">Top Score</a></li>
-                <li class="tab"><a href="#standing">Standing</a></li>
-                <li class="tab"><a href="#teams">Teams</a></li>
-            </ul>
-        </div>
-    `;
+
+    let dtRand = [{
+            tab: '<li class="tab"><a class="active" href="#match">Match</a></li>',
+            content: '<div id="match"></div>',
+            function: 'match'
+        },
+        {
+            tab: '<li class="tab"><a class="active" href="#topScore">Top Score</a></li>',
+            content: '<div id="topScore"></div>',
+            function: 'topScore'
+        },
+        {
+            tab: '<li class="tab"><a href="#standing">Standing</a></li>',
+            content: '<div id="standing"></div>',
+            function: 'standing'
+        },
+        {
+            tab: '<li class="tab"><a href="#teams">Teams</a></li>',
+            content: '<div id="teams"></div>',
+            function: 'teams'
+        }
+    ];
+
+    let numRand = Math.floor(Math.random() * 4);
+
+    if(page === "random") {
+        html += `
+        <div class="card hoverable">
+            <div class="card-content">
+                <h1 id="leagueName"></h1>
+            </div>
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                    ${dtRand[numRand].tab}
+                </ul>
+            </div>
+        `;
+    } else {
+        html += `
+        <div class="card hoverable">
+            <div class="card-content">
+                <h1 id="leagueName"></h1>
+            </div>
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                    <li class="tab"><a class="active" href="#match">Match</a></li>
+                    <li class="tab"><a href="#topScore">Top Score</a></li>
+                    <li class="tab"><a href="#standing">Standing</a></li>
+                    <li class="tab"><a href="#teams">Teams</a></li>
+                </ul>
+            </div>
+        `;
+    }
 
     /**
      * * MATCH
      */
     let parsingMatch = () => {
+        showLoader()
         let dtMatch = getMatches();
         dtMatch.then(data => {
             // console.log('MATCH',data)
@@ -35,16 +74,16 @@ let loadHome = () => {
             // select MatchDay
             match += `
                 <div class="row">
-                    <div class="col s4 right-align" style="margin-top: 2.5%;">
+                    <div class="col s2 m5 right-align" style="margin-top: 2.5%;">
                     <a id="prev" class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
                     </div>
-                    <div class="col s3 center-align">
+                    <div class="col s8 m2 center-align">
                         <label>Match Day</label>
                         <select id="select" >
 
                         </select>
                     </div>
-                    <div class="col s4 left-align" style="margin-top: 2.5%;">
+                    <div class="col s2 m5 left-align" style="margin-top: 2.5%;">
                         <a id="next" class="btn-floating btn-small waves-effect waves-light blue"><i class="material-icons">arrow_forward</i></a>
                     </div>
                 </div>
@@ -138,7 +177,13 @@ let loadHome = () => {
                 </tbody>
                 </table>
             `;
-            document.getElementById("match").innerHTML = match;
+            let elMatch = document.getElementById("match");
+            if(!elMatch.childElementCount) {
+                let newElement = document.createElement('div');
+                newElement.innerHTML = match;
+                document.getElementById("match").appendChild(newElement);
+            }
+            // document.getElementById("match").innerHTML = match;
             let sel = document.getElementById('select');
             sel.innerHTML = select;
             sel.value=valSelect;
@@ -224,9 +269,11 @@ let loadHome = () => {
      * * TOP SCORE
      */
     let parsingTopScore = () => {
+        showLoader()
         let dtTopScore = getTopGoal();
         dtTopScore.then(data => {
             // console.log('TOP SCORE',data)
+            document.getElementById("leagueName").innerHTML = `${data.competition.area.name}, ${data.competition.name}`;
             topScore += `
                 <table class="striped responsive-table">
                     <thead>
@@ -262,7 +309,13 @@ let loadHome = () => {
                 </tbody>
                 </table>
             `;
-            document.getElementById("topScore").innerHTML = topScore;
+            let elTopScore = document.getElementById("topScore");
+            if(!elTopScore.childElementCount) {
+                let newElement = document.createElement('div');
+                newElement.innerHTML = topScore;
+                document.getElementById("topScore").appendChild(newElement);
+            }
+            // document.getElementById("topScore").innerHTML = topScore;
             hideLoader()
         });
         dtTopScore.catch(error => {
@@ -274,8 +327,10 @@ let loadHome = () => {
      * * STANDING
      */
     let parsingStanding = () => {
+        showLoader()
         let dtStanding = getStandings();
         dtStanding.then(data => {
+            document.getElementById("leagueName").innerHTML = `${data.competition.area.name}, ${data.competition.name}`;
             // console.log('STANDING', data)
             showLoader()
             standing += `
@@ -302,7 +357,7 @@ let loadHome = () => {
                     standing += `
                         <tr>
                             <td>${i+1}</td>
-                            <td><img class="materialboxed" width="50" src="${data.team.crestUrl}" data-caption="${data.team.name}"><a href="${data.team.id}">${data.team.name}</a></td>
+                            <td><img class="materialboxed" width="50" src="${data.team.crestUrl}" data-caption="${data.team.name}">${data.team.name}</td>
                             <td>${data.playedGames}</td>
                             <td>${data.won}</td>
                             <td>${data.draw}</td>
@@ -319,7 +374,13 @@ let loadHome = () => {
                 </tbody>
                 </table>
             `;
-            document.getElementById("standing").innerHTML = standing;
+            let elStanding = document.getElementById("standing");
+            if(!elStanding.childElementCount) {
+                let newElement = document.createElement('div');
+                newElement.innerHTML = standing;
+                document.getElementById("standing").appendChild(newElement);
+            }
+            // document.getElementById("standing").innerHTML = standing;
 
             var materialboxed = document.querySelectorAll('.materialboxed');
             M.Materialbox.init(materialboxed, {});
@@ -335,9 +396,10 @@ let loadHome = () => {
      * * TEAMS
      */
     let parsingTeams = () => {
+        showLoader()
         let dtTeams = getTeams();
         dtTeams.then(data => {
-            showLoader();
+            document.getElementById("leagueName").innerHTML = `${data.competition.area.name}, ${data.competition.name}`;
             // console.log(data)
             // console.log(data.teams)
             // console.log('TEAMS', data)
@@ -386,7 +448,13 @@ let loadHome = () => {
                 </table>
                 <div id="detailTeams" style="display: none"></div>
             `;
-            document.getElementById("teams").innerHTML = teams;
+
+            let elTeams = document.getElementById("teams");
+            if(!elTeams.childElementCount) {
+                let newElement = document.createElement('div');
+                newElement.innerHTML = teams;
+                document.getElementById("teams").appendChild(newElement);
+            }
             
             let detailTeams = (hash) => {      
                 id = hash.replace(/\D/g, '');
@@ -574,6 +642,7 @@ let loadHome = () => {
                     let backDetailTeams = () => {
                         selTeams.style.display = '';
                         console.log('back');
+                        history.pushState({}, null, '/');
                         selDetailTeams.style.display = 'none';
                     }
 
@@ -595,7 +664,7 @@ let loadHome = () => {
                     selbtn_saveUnsive.addEventListener("click", saveUnsive);
 
                     // set fav when find result in indexdb
-                    let idbe = getFavTeams();
+                    let idbe = getSavedTeam();
                     idbe.then(idb => {
                         var tm = idb.filter(el => el.id == data.id)[0]
                         let selbtn_saveUnsive = document.getElementsByClassName("btn_saveUnsive")[0];
@@ -631,17 +700,8 @@ let loadHome = () => {
 
 
     {/* <div id="news"><h3 class="center-align">Upcoming</h3></div> */}
-    html += `
-        <div class="card-content">
-            <div id="match"></div>
-            <div id="topScore"></div>
-            <div id="standing"></div>
-            <div id="teams"></div>
-        </div>
-    </div>
-    `;
-    document.getElementById("body-content").innerHTML = html;
-    let tab = document.getElementsByClassName('tab');
+
+    
     let dd = data => {
         // console.log(data.replace(/^#/, ''))
         let dtTab = data.replace(/^#/, '');
@@ -664,6 +724,34 @@ let loadHome = () => {
         }
     }
 
+    if(page === "random") {
+        dtRand[numRand].function
+        dd(dtRand[numRand].function)
+        html += `
+            <div class="card-content">
+                ${dtRand[numRand].content}
+            </div>
+        </div>
+        `;
+    } else {    
+        parsingMatch();
+        html += `
+            <div class="card-content">
+                <div id="match"></div>
+                <div id="topScore"></div>
+                <div id="standing"></div>
+                <div id="teams"></div>
+            </div>
+        </div>
+        `;
+    }
+    document.getElementById("body-content").innerHTML = html;
+    // tabs
+    var elems2 = document.querySelectorAll('.tabs');
+    var instance = M.Tabs.init(elems2, {});
+
+    let tab = document.getElementsByClassName('tab');
+
     for(let a of tab) {
         a.addEventListener("click", function() {
             dd(this.firstChild.hash)
@@ -675,6 +763,179 @@ let loadHome = () => {
     // parsingTopScore();
     // parsingStanding();
     // parsingTeams();
+}
+
+/**
+ * * Get all data saved
+ */
+let loadSaved = () => {
+    let saved = ''
+    let dtLoadSaved = getSavedTeam();
+    dtLoadSaved.then(data => {
+        // console.log(data)
+        saved += `<div class="row">`;
+        for(let dt in data) {
+            let {phone, website, email} = "";
+            let detailTeamsCompetitions = '';
+            let detailTeamsPlayers = '';
+            if(data[dt].phone) {
+                phone = `<a href="tel: ${data[dt].phone}">${data[dt].phone}</a>`;
+            } else {
+                phone = ` - `;
+            }
+            if(data[dt].website) {
+                website = `<a target="_blank" href="${data[dt].website}">${data[dt].website}</a>`;
+            } else {
+                website = ` - `;
+            }
+            if(data[dt].email) {
+                email = `<a href="mailto: ${data[dt].email}">${data[dt].email}</a>`;
+            } else {
+                email = ` - `;
+            }
+            saved += `
+                
+                <div class="col s12 m4">
+                    <div class="card hoverable">
+                        <div class="card-image blue lighten-3">
+                            <img class="materialboxed" data-caption="${data[dt].name}" src="${data[dt].crestUrl}" width="267" height="267">
+                            <span class="card-title blue" style="border-radius: 0 5rem 0 0;">${data[dt].name}</span>
+                            <a class="btn-floating halfway-fab waves-effect waves-light red">
+                                <i class="material-icons btn_saveUnsive" id="${data[dt].id}">favorite</i>
+                            </a>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    Name : <b>${data[dt].name ? data[dt].name : " - "}</b>
+                                </div>
+                                <div class="col s12 m12">
+                                    Phone : <b>${phone}</b>
+                                </div>
+                                <div class="col s12 m12">
+                                    Website : <b>${website}</b>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    Shost Name : <b>${data[dt].shortName ? data[dt].shortName : " - "}</b>
+                                </div>
+                                <div class="col s12 m12">
+                                    Address : <b>${data[dt].address ? data[dt].address : " - "}</b>
+                                </div>
+                                <div class="col s12 m12">
+                                    Email : <b>${email}</b>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    Founded : <b>${data[dt].founded ? data[dt].founded : " - "}</b>
+                                </div>
+                                <div class="col s12 m12">
+                                    Club Colors : <b>${data[dt].clubColors ? data[dt].clubColors : " - "}</b>
+                                </div>
+                                <div class="col s12 m12">
+                                    Venue : <b>${data[dt].venue ? data[dt].venue : " - "}</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        
+                        `;
+        };
+        saved += `</div>`;
+
+        let elSaved = document.getElementById('body-content').innerHTML = saved;
+
+        let selbtn_saveUnsive = document.getElementsByClassName("btn_saveUnsive");
+
+        // button trigger to save/unsave team
+        let saveUnsive = data => {
+            deleteTeam(parseInt(data));
+            loadSaved();
+        }
+
+        for(let a of selbtn_saveUnsive) {
+            a.addEventListener("click", function() {
+                saveUnsive(this.id)
+            });
+        }
+
+        // set fav when find result in indexdb
+        // let idbe = getSavedTeam();
+        // idbe.then(idb => {
+        //     var tm = idb.filter(el => el.id == data.id)[0]
+        //     let selbtn_saveUnsive = document.getElementsByClassName("btn_saveUnsive")[0];
+        //     if(tm) {
+        //         selbtn_saveUnsive.innerHTML = "favorite";
+        //     } else {
+        //         selbtn_saveUnsive.innerHTML = "favorite_border";
+        //     }
+        // })
+
+        var materialboxed = document.querySelectorAll('.materialboxed');
+        M.Materialbox.init(materialboxed, {});
+    })
+}
+
+/**
+ * * Push Notif
+ */
+let requestPermission = () => {
+    if ('Notification' in window) {
+        Notification.requestPermission().then(function (result) {
+            if (result === "denied") {
+                console.log("Fitur notifikasi tidak diijinkan.");
+                return;
+            } else if (result === "default") {
+                console.error("Pengguna menutup kotak dialog permintaan ijin.");
+                return;
+            }
+
+            /* navigator.serviceWorker.getRegistration().then(function (reg) {
+               reg.showNotification('Notifikasi diijinkan!');
+            }); */
+
+            if (('PushManager' in window)) {
+                navigator.serviceWorker.getRegistration()
+                    .then(function (registration) {
+                        registration.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: urlBase64ToUint8Array('BFMlSAN5YITMydnnKfidQ8l9t-A-5iTwtysQ08Pb4OtgRoeYseq__EwhWu4nxaDEPTIOLiVB5odKKD1nuQHY0kQ')
+                            })
+                            .then(function (subscribe) {
+                                console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
+                                console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
+                                    null, new Uint8Array(subscribe.getKey('p256dh'))
+                                )));
+                                console.log('Berhasil melakukan subscribe dengan auth key: ', btoa((String.fromCharCode.apply(
+                                    null, new Uint8Array(subscribe.getKey('auth'))
+                                ))));
+                            })
+                            .catch(function (e) {
+                                console.error('Tidak dapat melakukan subscribe ', e.message);
+                            });
+                    });
+            }
+        });
+    }
+}
+
+// mengubah string menjadi Uint8Array
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
 }
 
 let groupBy = function (xs, key) {

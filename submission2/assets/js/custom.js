@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
         numVisible: 5
     });
 
-    // tabs
+    /* // tabs
     var elems2 = document.querySelectorAll('.tabs');
-    var instance = M.Tabs.init(elems2, {});
+    var instance = M.Tabs.init(elems2, {}); */
 
     
 });
