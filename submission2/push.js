@@ -44,13 +44,14 @@ let data = [
 
 var pushSubscription = {
    // Chrome android
-   "endpoint": "https://fcm.googleapis.com/fcm/send/fktCHbIsqck:APA91bEJR3yQBF2hxlEDpuSBRIWeUd5Hc3YAvw5pxWVouWOWDEYW_KY_N_4spKY1mpPWkmGsKGMXSHr5peqJGkFCItaBddV0bnUma_51VSUFqPyLhZXfWt-5REfEZ2YdGHGr56iY6_ax",
+   "endpoint": "https://fcm.googleapis.com/fcm/send/cZJIjXdTMfs:APA91bHh-5kyRzRKGj4oeX7nErPGJPB6qTyqcdv9dQhmE1WpAm5dfAvm4D1-CX98Na7ikwYs9fAXUzmLz5XgGGm32MgqIkXmEERuimej6UsrI8UDnhihYVbDsSWdXL0R2PXg03R1xVq1",
    "keys": {
-      "p256dh": "BPVta7lNmvlWJZyjUjh8LWNoTPStaDLh7pr4kVCSVrcKGivuwsHgQnEC0wnYbgWF2nHkBtfU0PFxl6moniwhuBE=",
-      "auth": "dVzzmkrdVlfoVZX/smMxyw=="
+      "p256dh": "BMyjg5ATxsI1pWeKBzrLXL/HpBLiwSzRNE0NIfJaSfIyoNW0bmr9ASaZeUj+0TKxbRCgHRAiK97iivZxpFe16nk=",
+      "auth": "YlgN38C3DVIqX7qaBal1rA=="
    }
 };
-var payload = 'Selamat! Aplikasi Anda sudah dapat menerima push notifikasi!';
+
+var payload = 'Hi, welcome to my app, this app will give you update information about football. So, stay tune 🤩';
 
 var options = {
    gcmAPIKey: '986915851506',
