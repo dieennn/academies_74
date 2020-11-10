@@ -291,7 +291,7 @@ let loadSaved = () => {
             `;
         }
 
-        let elSaved = document.getElementById('body-content').innerHTML = saved;
+        document.getElementById('body-content').innerHTML = saved;
 
         let selbtn_saveUnsive = document.getElementsByClassName("btn_saveUnsive");
 

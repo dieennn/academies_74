@@ -10,12 +10,14 @@
         {
           "src": "./assets/img/192x192.png",
           "type": "image/png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "purpose": "any maskable"
         },        
         {
             "src": "./assets/img/512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "gcm_sender_id": "986915851506"
