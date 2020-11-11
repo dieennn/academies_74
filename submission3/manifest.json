@@ -1,0 +1,24 @@
+{
+    "name": "MPWA Submission3",
+    "short_name": "MPWA S3",
+    "description": "Membangun Progressive Web Apps",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#3498db",
+    "theme_color": "#2980b9",
+    "icons": [
+        {
+          "src": "./assets/img/192x192.png",
+          "type": "image/png",
+          "sizes": "192x192",
+          "purpose": "any maskable"
+        },        
+        {
+            "src": "./assets/img/512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "gcm_sender_id": "986915851506"
+}
