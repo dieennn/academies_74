@@ -44,10 +44,10 @@ let data = [
 
 var pushSubscription = {
    // Chrome android
-   "endpoint": "https://fcm.googleapis.com/fcm/send/cZJIjXdTMfs:APA91bHh-5kyRzRKGj4oeX7nErPGJPB6qTyqcdv9dQhmE1WpAm5dfAvm4D1-CX98Na7ikwYs9fAXUzmLz5XgGGm32MgqIkXmEERuimej6UsrI8UDnhihYVbDsSWdXL0R2PXg03R1xVq1",
+   "endpoint": "https://fcm.googleapis.com/fcm/send/e7uIg3vPLY0:APA91bGcJl23BtsVMUlxtrcnd6ueympTvM0Y4oJUPKLC3Sw7wwb2t7AcFz-r5CYu2gKxFUusMGRI5m78M5VTVinOfuGPd2h1s-0M_dCuYz1GuyISDZwkJwJh77MnhTuwjQeZFoqQ2hVG",
    "keys": {
-      "p256dh": "BMyjg5ATxsI1pWeKBzrLXL/HpBLiwSzRNE0NIfJaSfIyoNW0bmr9ASaZeUj+0TKxbRCgHRAiK97iivZxpFe16nk=",
-      "auth": "YlgN38C3DVIqX7qaBal1rA=="
+      "p256dh": "BNqgn8FQ4KV3QVP1gukHWYGcDJFl16dKdGm++GqC2cvtl8eKV9QNsdHobv5r8YpC4Vni45c9VeEoFdonzLX699o=",
+      "auth": "PXuRxLnJXBzgLu0MGoyWxA=="
    }
 };
 

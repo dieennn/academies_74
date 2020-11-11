@@ -108,3 +108,19 @@ self.addEventListener('push', event => {
       self.registration.showNotification('MPWA Submission3', options)
    );
 });
+
+// Open app when click notification
+self.addEventListener('notificationclick', event => {
+   const rootUrl = new URL('/', location).href;
+   event.notification.close();
+   event.waitUntil(
+     clients.matchAll().then(matchedClients => {
+       for (let client of matchedClients) {
+         if (client.url === rootUrl) {
+           return client.focus();
+         }
+       }
+       return clients.openWindow("/");
+     })
+   );
+});
